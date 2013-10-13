@@ -42,13 +42,12 @@ val DayNames = [ "Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun" ];
 
 fun sum_first_N ( to : int) =
     let 
-	val md = DaysPerMonth
-	fun count( from: int,  xs: int list ) =
+	fun count( from: int,  xs : int list ) =
 	    if from = to
 	    then  0
 	    else hd xs + count( from + 1, tl xs)
     in
-	count(0, md)
+	count(0, DaysPerMonth )
     end
 
 
@@ -63,8 +62,10 @@ fun doy ( dt : (int*int*int) ) =
 
 (* HW 1  Takes 2 date tuples, return true if 2nd date is older, else false *)
 
-fun is_older( date : int*int*int, isOlderDt : int*int*int ) =
-    true
+fun is_older( dt : int*int*int, isOlderDt : int*int*int ) =
+    if doy( isOlderDt ) >  doy( dt) 
+    then true
+    else false
 
 (* HW 2 Given list of date tuples and a month number,
 return number of dates containing month 'mth' *)
