@@ -31,13 +31,35 @@
 (* February has twenty-eight,  *)
 (* but leap year coming one in four *)
 (* February then has one day more. *)
+(*
+                                 30      30          30      30           
+                     j   f   m   ap  m   jun jul au  s   o   n   d  jan   *)
+val DaysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31 ];
+
+val MonthhNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Aug", "Sept", "Oct", "Nov", "Dec" ];
+
+val DayNames = [ "Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun" ];
+
+fun sum_first_N ( to : int) =
+    let 
+	val md = DaysPerMonth
+	fun count( from: int,  xs: int list ) =
+	    if from = to
+	    then  0
+	    else hd xs + count( from + 1, tl xs)
+    in
+	count(0, md)
+    end
 
 
-val daysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31 ];
-
-val mthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Aug", "Sept", "Oct", "Nov", "Dec" ];
-
-val dayNames = [ "Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun" ];
+fun doy ( dt : (int*int*int) ) =
+       let
+	   val yeardays = 365 * (#3 dt)
+	   val monthdays = sum_first_N( (#1 dt) )
+	   val days = (#2 dt)
+       in
+	       yeardays + monthdays + days
+       end
 
 (* HW 1  Takes 2 date tuples, return true if 2nd date is older, else false *)
 
@@ -96,13 +118,14 @@ fun date_to_string( dt: (int*int*int) ) =
 (* Exception can occur if last assumption is false..             *)
 
 fun number_before_reaching_sum (sum: int, xs: int list) =
-	77
+    33
 
 (* HW 9: Takes day of year and returns month that day is in. 1 >= DOY <= 365 *)
 (* hint use number_before_reaching_sum' function and list of 12 ints. *)
 
 fun what_month( dayofyr : int  ) =
-	77
+    number_before_reaching_sum ( dayofyr, DaysPerMonth)
+
 
 (* HW 10: Takes two days of the year, doy1 and doy2
 Return list of all months contained in range between doy1 and doy2 
