@@ -24,14 +24,14 @@
 
 *)
 
-(*
-Thirty days hath September,
-April, June, and November, 
-all the rest have thirty-one. 
-February has twenty-eight, 
-but leap year coming one in four
-February then has one day more.
-*)
+
+(* Thirty days hath September, *)
+(* April, June, and November,  *)
+(* all the rest have thirty-one.  *)
+(* February has twenty-eight,  *)
+(* but leap year coming one in four *)
+(* February then has one day more. *)
+
 
 val daysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31 ];
 
@@ -39,53 +39,72 @@ val mthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Aug", "Sept", "Oct",
 
 val dayNames = [ "Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun" ];
 
-(* Return true if 2nd date is older, else false *)
+(* HW 1  Takes 2 date tuples, return true if 2nd date is older, else false *)
 
 fun is_older( date : int*int*int, isOlderDt : int*int*int ) =
     true
 
-(* return number of dates containing month 'mth' *)
+(* HW 2 Given list of date tuples and a month number,
+return number of dates containing month 'mth' *)
 
 fun number_in_month (  dts : (int*int*int) list, mth: int ) =
     7
-
-(* return numb dates which contain a month from list of months *)
-(* hint, use number_in_month.  Assume no repeated months in months list*)
+	
+(* HW 3  Given list of date tuples, and list of month numbers.  *)
+(* return numb dates which contain a month from list of months  *)
+(* hint, use number_in_month and use '@', SML's list append op. *)
+(* Assume no repeated months in months list.                    *)
 
 fun number_in_months ( dts: (int*int*int) list, mths: int list ) =
     22
 
-(* takes a list of strings and an int n and returns the nth element of the list where the head of the list is 1st. *)
+(* HW 4: dates_in_month takes list of dates and month nbr.  *)
+(* returns a list of dates from "ds" that are in the month. *)
+(* The returned list should contain dates in the order they *)
+(* were originally given.                                   *)
 
-fun get_nth ( string list, n: int) =
+fun dates_in_month ( ds: (int*int*int), monthNum: int) =
+    [ (11,22,1947), (1,1,2001) ]
+
+(* HW 5: dates_in_months takes list of dates and list of month numbers    *)
+(* returns a list of dates from ds that are in any of the months ms.      *)
+(* Assume the list of months has no number repeated.                      *)
+(* Hint: Use ans to the previous problem and list-append operator (@).    *)
+
+fun dates_in_months ( ds: (int*int*int), ms : int list) =
+    [ (11,22,1947), (12,25,2013) ]
+
+
+ 
+(* HW 6: takes a list of strings and an int and returns the *)
+(* nth element of the list. Head of the list is 1st.        *)
+
+fun get_nth ( dtNames: string list, n: int) =
 	77
 
-(* return date as string - use ^ to concatenate strings, and
-   Int.toString to convert date int to string
-*)
+(* HW 7: Given a date tuple, return date as string - use ^ to concatenate *)
+(* strings, and Int.toString to convert int to string               *)
 
-fun date_to_string( dt: int*int*int* ) =
+fun date_to_string( dt: (int*int*int) ) =
 	"nov 22, 1947"
 
-(* 
-return an int n such that the first n elements of the list add to less than sum,
-but the next n + 1 elements of the list add to sum or more.
-Assume sum and list of ints all positive and that entire list sums to more than sum.  
-Exception can occur if last assumption is false..
-Use a list holding 12 integers and your answer to the previous problem.
-*)
+(* HW 8: Given int sum and list of integers, return int such     *)
+(* that the first n elements of the list add to less than sum,   *)
+(* but the next n + 1 elements of the list add to sum or more.   *)
+(* Assume sum and list of ints all positive and that entire list *)
+(* sums to more than sum.                                        *)
+(* Exception can occur if last assumption is false..             *)
 
-fun number_before_reaching_sum (sum: int, int list) =
+fun number_before_reaching_sum (sum: int, xs: int list) =
 	77
 
-(* Takes day of year and returns month that day is in. 1 >= DOY <= 365 *)
+(* HW 9: Takes day of year and returns month that day is in. 1 >= DOY <= 365 *)
 (* hint use number_before_reaching_sum' function and list of 12 ints. *)
 
 fun what_month( dayofyr : int  ) =
 	77
 
-(*
-Takes two days of the year day1 and day2
+(* HW 10: Takes two days of the year, doy1 and doy2
 Return list of all months contained in range between doy1 and doy2 
 [m1,m2,...,mn] where m1 is the month of day1, 
 m2 is the month of day1+1, ..., and mn is the month of day day2. 
@@ -96,7 +115,7 @@ fun month_range( doy1 : int, doy2 : int ) =
 	[3,4,5]
 
 
-(* takes a list of dates
+(* HW 11: takes a list of dates
 returns a (int*int*int) option.
 It evaluates to NONE if the list has no dates
 SOME d if the date d is the oldest date in the list.
