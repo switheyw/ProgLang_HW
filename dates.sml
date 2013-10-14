@@ -75,14 +75,14 @@ fun is_older( dt : int*int*int, isOlderDt : int*int*int ) =
 (* Assume dates are valid                               *)
 
 fun number_in_month (  dts : (int*int*int) list, mth: int ) =
-    let fun myfilter(xs : (int*int*int) list, cnt: int ) =
+    let fun nimFilter(xs : (int*int*int) list, cnt: int ) =
 	    if null xs
 	    then cnt
 	    else if #1(hd xs) = mth
-	    then myfilter((tl xs), cnt+1)
-	    else myfilter((tl xs), cnt)
+	    then nimFilter((tl xs), cnt+1)
+	    else nimFilter((tl xs), cnt)
     in
-	myfilter(dts, 0)
+	nimFilter(dts, 0)
     end
 
 
@@ -97,14 +97,17 @@ fun number_in_months ( dts: (int*int*int) list, mths: int list ) =
     then []
     else number_in_month( dts, hd(mths))  :: number_in_months( dts, tl(mths) )
 
-
 (* HW 4: dates_in_month takes list of dates and month nbr.  *)
-(* returns a list of dates from "ds" that are in the month. *)
+(* returns a list of dates from "dts" that are in the month.*)
 (* The returned list should contain dates in the order they *)
 (* were originally given.                                   *)
+fun dates_in_month(  dts: (int*int*int) list, monthNum: int) =
+    if null dts
+    then []
+    else if #1(hd dts) = monthNum
+    then (hd dts) :: dates_in_month(tl(dts), monthNum)
+    else dates_in_month( tl(dts), monthNum)
 
-fun dates_in_month ( ds: (int*int*int), monthNum: int) =
-    [ (11,22,1947), (1,1,2001) ]
 
 (* HW 5: dates_in_months takes list of dates and list of month numbers    *)
 (* returns a list of dates from ds that are in any of the months ms.      *)
