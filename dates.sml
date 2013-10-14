@@ -31,15 +31,17 @@
 (* February has twenty-eight,  *)
 (* but leap year coming one in four *)
 (* February then has one day more. *)
-(*
-                                 30      30          30      30           
-                     j   f   m   ap  m   jun jul au  s   o   n   d  jan   *)
+
+
 val DaysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31 ];
 
-val MonthhNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Aug", "Sept", "Oct", "Nov", "Dec" ];
+val MonthhNames = 
+["Jan", "Feb", "Mar", "Apr", "May", "June", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
 val DayNames = [ "Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun" ];
 
+
+(* Determine number of days in first N months, ie, from month 1 to month 'to' *)
 fun sum_first_N ( to : int) =
     let 
 	fun count( from: int,  xs : int list ) =
@@ -50,7 +52,8 @@ fun sum_first_N ( to : int) =
 	count(0, DaysPerMonth )
     end
 
-
+(* compute Day of Year.  Eases comparion of dates.  *)
+(* assume dates are valid.                          *)
 fun doy ( dt : (int*int*int) ) =
        let
 	   val yeardays = 365 * (#3 dt)
@@ -61,17 +64,28 @@ fun doy ( dt : (int*int*int) ) =
        end
 
 (* HW 1  Takes 2 date tuples, return true if 2nd date is older, else false *)
-
+(* Both dates assumed to be valid.                                         *)
 fun is_older( dt : int*int*int, isOlderDt : int*int*int ) =
     if doy( isOlderDt ) >  doy( dt) 
     then true
     else false
 
-(* HW 2 Given list of date tuples and a month number,
-return number of dates containing month 'mth' *)
+(* HW 2 Given list of date tuples and a month number,   *)
+(* return number of dates containing month 'mth'        *)
+(* Assume dates are valid                               *)
 
 fun number_in_month (  dts : (int*int*int) list, mth: int ) =
-    7
+    let fun myfilter(xs : (int*int*int) list, cnt: int ) =
+	    if null xs
+	    then cnt
+	    else if #1(hd xs) = mth
+	    then myfilter((tl xs), cnt+1)
+	    else myfilter((tl xs), cnt)
+    in
+	myfilter(dts, 0)
+    end
+
+
 	
 (* HW 3  Given list of date tuples, and list of month numbers.  *)
 (* return numb dates which contain a month from list of months  *)
@@ -79,7 +93,10 @@ fun number_in_month (  dts : (int*int*int) list, mth: int ) =
 (* Assume no repeated months in months list.                    *)
 
 fun number_in_months ( dts: (int*int*int) list, mths: int list ) =
-    22
+    if null mths
+    then []
+    else number_in_month( dts, hd(mths))  :: number_in_months( dts, tl(mths) )
+
 
 (* HW 4: dates_in_month takes list of dates and month nbr.  *)
 (* returns a list of dates from "ds" that are in the month. *)
