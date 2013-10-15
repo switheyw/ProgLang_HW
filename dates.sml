@@ -35,13 +35,15 @@
 
 val DaysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31 ];
 
-val MonthhNames = 
+val MonthNames = 
 ["Jan", "Feb", "Mar", "Apr", "May", "June", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
 val DayNames = [ "Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun" ];
 
 
 (* Determine number of days in first N months, ie, from month 1 to month 'to' *)
+(* Days in each month given by list of month days, 'DaysPerMonth'             *)
+
 fun sum_first_N ( to : int) =
     let 
 	fun count( from: int,  xs : int list ) =
@@ -114,8 +116,10 @@ fun dates_in_month(  dts: (int*int*int) list, monthNum: int) =
 (* Assume the list of months has no number repeated.                      *)
 (* Hint: Use ans to the previous problem and list-append operator (@).    *)
 
-fun dates_in_months ( ds: (int*int*int), ms : int list) =
-    [ (11,22,1947), (12,25,2013) ]
+fun dates_in_months ( ds: (int*int*int) list, ms : int list) =
+    if null ms
+    then []
+    else dates_in_month( ds, hd(ms)) @ dates_in_months( ds, tl(ms) )
 
 
  
@@ -123,13 +127,22 @@ fun dates_in_months ( ds: (int*int*int), ms : int list) =
 (* nth element of the list. Head of the list is 1st.        *)
 
 fun get_nth ( dtNames: string list, n: int) =
-	77
+    let 
+	fun count( from: int,  ss: string list ) =
+	    if from = n
+	    then  hd ss
+	    else count( from + 1, (tl ss) )
+    in
+	count(1, dtNames )
+    end
 
 (* HW 7: Given a date tuple, return date as string - use ^ to concatenate *)
 (* strings, and Int.toString to convert int to string               *)
 
 fun date_to_string( dt: (int*int*int) ) =
-	"nov 22, 1947"
+    get_nth( MonthNames, (#1 dt) ) ^ " " ^
+    Int.toString( (#2 dt) )        ^ ", " ^ 
+    Int.toString( (#3 dt) ) 
 
 (* HW 8: Given int sum and list of integers, return int such     *)
 (* that the first n elements of the list add to less than sum,   *)
@@ -139,7 +152,17 @@ fun date_to_string( dt: (int*int*int) ) =
 (* Exception can occur if last assumption is false..             *)
 
 fun number_before_reaching_sum (sum: int, xs: int list) =
-    33
+    let 
+        fun count(mthno : int, running_sum : int, xs : int list ) =
+            if null xs
+            then  mthno
+            else if ( (hd xs) +  running_sum )  >= sum
+	    then mthno
+	    else count( mthno + 1, running_sum + (hd xs), (tl xs))
+    in
+        count(1, 0, xs )
+    end
+
 
 (* HW 9: Takes day of year and returns month that day is in. 1 >= DOY <= 365 *)
 (* hint use number_before_reaching_sum' function and list of 12 ints. *)
@@ -154,17 +177,38 @@ Return list of all months contained in range between doy1 and doy2
 m2 is the month of day1+1, ..., and mn is the month of day day2. 
 Note the result will have length day2 - day1 + 1 or length 0 if day1>day2.
 *)
+fun countup(from : int, to : int) =
+    if from=to
+    then to::[]
+    else from :: countup(from+1,to)
 
+fun countdown(from : int, to : int) =
+    if from=to
+    then to::[]
+    else from :: countdown(from-1,to)
+    
 fun month_range( doy1 : int, doy2 : int ) =
-	[3,4,5]
-
+    if doy1 = doy2
+    then []
+    else what_month(doy1) :: month_range( doy1 + 1, doy2)
 
 (* HW 11: takes a list of dates
 returns a (int*int*int) option.
 It evaluates to NONE if the list has no dates
 SOME d if the date d is the oldest date in the list.
 *)
+(* can do this w/o the option, but different type of if then else branches *)
+(* caught me up and I ran out of time.  Apologies to peers!                *)
+fun oldest( xs: (int*int*int) list) =
+    if null xs
+    then NONE
+    else let
+	val candidate = oldest( tl xs)
+    in
+	if isSome doy(candidate) andalso valOf doy(candidate) > doy(hd xs)
+	then candidate 
+	else SOME (hd xs)
+    end
+	
 
-fun oldest( dts: (int*int*int) list) =
-	(1,2,3)
 
